@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Plus, Search, Edit2, Trash2, X, AlertCircle, Loader2, ExternalLink } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, X, AlertCircle, Loader2, ExternalLink, BarChart3 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import AdminSidebar from '../components/AdminSidebar';
 import Modal from '../components/Modal';
 import LoadingSkeleton from '../components/LoadingSkeleton';
@@ -39,6 +40,7 @@ export default function AdminEvents() {
   const [formErrors, setFormErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const navigate = useNavigate();
   const { addToast } = useToast();
 
   useEffect(() => {
@@ -259,6 +261,13 @@ export default function AdminEvents() {
                       <td className="px-6 py-4 text-dark-300 text-sm hidden lg:table-cell">{event.location}</td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => navigate(`/admin/events/${event.id}/dashboard`)}
+                            className="p-2 text-dark-400 hover:text-primary-400 hover:bg-primary-500/10 rounded-lg transition-colors"
+                            title="View Dashboard"
+                          >
+                            <BarChart3 className="w-4 h-4" />
+                          </button>
                           <a
                             href={`/events/${event.id}`}
                             target="_blank"
