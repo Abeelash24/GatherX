@@ -69,4 +69,13 @@ export const registrationAPI = {
   updatePaymentStatus: (id, paymentStatus) => api.put(`/register/${id}/payment-status`, { paymentStatus }),
 };
 
+export const dashboardAPI = {
+  getEventDashboard: (eventId) => api.get(`/events/${eventId}/dashboard`),
+  exportEventData: (eventId, format = 'csv') =>
+    api.get(`/events/${eventId}/export`, {
+      params: { format },
+      responseType: format === 'csv' ? 'blob' : 'json',
+    }),
+};
+
 export default api;

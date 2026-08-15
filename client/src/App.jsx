@@ -12,6 +12,7 @@ import Contact from './pages/Contact';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminEvents from './pages/AdminEvents';
+import AdminEventDashboard from './pages/AdminEventDashboard';
 import AdminRegistrations from './pages/AdminRegistrations';
 import AdminSettings from './pages/AdminSettings';
 import NotFound from './pages/NotFound';
@@ -44,6 +45,11 @@ function App() {
             <Route path="/admin/events" element={
               <ProtectedRoute>
                 <AdminEvents />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/events/:eventId/dashboard" element={
+              <ProtectedRoute>
+                <AdminEventDashboard />
               </ProtectedRoute>
             } />
             <Route path="/admin/registrations" element={

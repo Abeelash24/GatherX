@@ -6,6 +6,7 @@ import eventsRoutes from './routes/events.js';
 import adminRoutes from './routes/admin.js';
 import registrationRoutes from './routes/register.js';
 import announcementsRoutes from './routes/announcements.js';
+import eventsDashboardRoutes from './routes/events-dashboard.js';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/events', eventsRoutes);
+app.use('/api/events', eventsDashboardRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/register', registrationRoutes);
 app.use('/api/announcements', announcementsRoutes);
