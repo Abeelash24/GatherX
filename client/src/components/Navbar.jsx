@@ -7,7 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { admin, logout } = useAuth();
+  const { user, admin, logoutUser, logoutAdmin } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
@@ -74,26 +74,65 @@ export default function Navbar() {
             </button>
             {admin ? (
               <div className="flex items-center gap-3">
-                <span className={`text-sm ${theme === 'light' ? 'text-dark-600' : 'text-dark-300'}`}>Welcome, {admin.username}</span>
+                <Link
+                  to="/admin/dashboard"
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium bg-primary-500/10 text-primary-400 border border-primary-500/20 hover:bg-primary-500/20 transition-colors"
+                >
+                  Dashboard
+                </Link>
+                <span className={`text-sm ${theme === 'light' ? 'text-dark-600' : 'text-dark-300'}`}>
+                  {admin.username}
+                </span>
                 <button
-                  onClick={logout}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors text-sm ${
+                  onClick={logoutAdmin}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors text-sm ${
                     theme === 'light'
                       ? 'bg-dark-100 hover:bg-dark-200 text-dark-900'
                       : 'bg-dark-800 hover:bg-dark-700 text-white'
                   }`}
+                  title="Logout Admin"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </div>
+            ) : user ? (
+              <div className="flex items-center gap-3">
+                <span className={`text-sm font-medium ${theme === 'light' ? 'text-dark-700' : 'text-dark-200'}`}>
+                  {user.name || user.email}
+                </span>
+                <button
+                  onClick={logoutUser}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors text-sm ${
+                    theme === 'light'
+                      ? 'bg-dark-100 hover:bg-dark-200 text-dark-900'
+                      : 'bg-dark-800 hover:bg-dark-700 text-white'
+                  }`}
+                  title="Logout"
                 >
                   <LogOut className="w-4 h-4" />
                   Logout
                 </button>
               </div>
             ) : (
-              <Link
-                to="/admin/login"
-                className="btn-primary text-sm px-5 py-2.5"
-              >
-                Admin Panel
-              </Link>
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/login"
+                  className="btn-primary text-sm px-4 py-2"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/admin/login"
+                  className={`text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                    theme === 'light'
+                      ? 'border-dark-300 text-dark-600 hover:bg-dark-100'
+                      : 'border-dark-700 text-dark-400 hover:bg-dark-800 hover:text-white'
+                  }`}
+                >
+                  Admin
+                </Link>
+              </div>
             )}
           </div>
 
@@ -144,10 +183,26 @@ export default function Navbar() {
             {admin ? (
               <>
                 <Link to="/admin/dashboard" className={`block px-4 py-3 rounded-xl transition-colors ${theme === 'light' ? 'text-dark-900 hover:bg-dark-100' : 'text-white hover:bg-dark-800/50'}`}>
-                  Dashboard
+                  Admin Dashboard
                 </Link>
                 <button
-                  onClick={logout}
+                  onClick={logoutAdmin}
+                  className={`w-full text-left px-4 py-3 rounded-xl transition-colors ${
+                    theme === 'light'
+                      ? 'text-red-600 hover:bg-red-50'
+                      : 'text-red-400 hover:bg-red-500/10'
+                  }`}
+                >
+                  Logout ({admin.username})
+                </button>
+              </>
+            ) : user ? (
+              <div className="pt-2 border-t border-dark-800">
+                <div className="px-4 py-2 text-sm text-dark-400">
+                  Signed in as <span className="text-white font-medium">{user.name || user.email}</span>
+                </div>
+                <button
+                  onClick={logoutUser}
                   className={`w-full text-left px-4 py-3 rounded-xl transition-colors ${
                     theme === 'light'
                       ? 'text-red-600 hover:bg-red-50'
@@ -156,14 +211,22 @@ export default function Navbar() {
                 >
                   Logout
                 </button>
-              </>
+              </div>
             ) : (
-              <Link
-                to="/admin/login"
-                className="block w-full text-center px-4 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-xl transition-colors font-medium btn-primary"
-              >
-                Admin Panel
-              </Link>
+              <div className="pt-2 border-t border-dark-800 space-y-2">
+                <Link
+                  to="/login"
+                  className="block w-full text-center px-4 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-xl transition-colors font-medium btn-primary"
+                >
+                  Login / Register
+                </Link>
+                <Link
+                  to="/admin/login"
+                  className="block w-full text-center px-4 py-2 text-dark-400 hover:text-white text-sm"
+                >
+                  Admin Portal
+                </Link>
+              </div>
             )}
           </div>
         </div>

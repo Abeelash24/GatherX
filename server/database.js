@@ -74,6 +74,30 @@ db.serialize(() => {
     db.run("ALTER TABLE events ADD COLUMN upi_qr_url TEXT DEFAULT ''");
   });
 
+  db.run(`CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role TEXT DEFAULT 'user',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`);
+
+  const userCount = db.get('SELECT COUNT(*) as count FROM users', (err, row) => {
+    if (err) return;
+    if (!row || row.count === 0) {
+      const defaultPassword = bcrypt.hashSync('user123', 10);
+      db.run(
+        'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)',
+        ['Demo User', 'user@gatherx.com', defaultPassword, 'user'],
+        (err) => {
+          if (err) console.error('Failed to create default user:', err.message);
+          else console.log('Default user created: user@gatherx.com / user123');
+        }
+      );
+    }
+  });
+
   const adminCount = db.get('SELECT COUNT(*) as count FROM admin', (err, row) => {
     if (err) return;
     if (row.count === 0) {

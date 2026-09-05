@@ -4,6 +4,7 @@ import { CheckCircle, AlertCircle, Calendar, MapPin, Loader2 } from 'lucide-reac
 import { eventAPI, registrationAPI } from '../services/api';
 import BackButton from '../components/BackButton';
 import { useToast } from '../context/ToastContext';
+import { useAuth } from '../context/AuthContext';
 
 function formatDate(dateStr) {
   if (!dateStr) return 'Date TBA';
@@ -20,6 +21,7 @@ export default function Register() {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const { addToast } = useToast();
+  const { user } = useAuth();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -28,7 +30,7 @@ export default function Register() {
   const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
-    name: '',
+    name: user?.name || '',
     college: '',
     event: '',
     noOfEvents: '',

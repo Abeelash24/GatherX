@@ -63,7 +63,9 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  db.get('SELECT * FROM events WHERE id = ?', [req.params.id], (err, row) => {
+  const eventId = req.params.id;
+
+  db.get('SELECT * FROM events WHERE id = ?', [eventId], (err, row) => {
     if (err) {
       console.error('Database error:', err);
       return res.status(500).json({ message: 'Failed to fetch event' });

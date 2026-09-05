@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Calendar, MapPin, Clock, Users, Tag } from 'lucide-react';
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 function formatDate(dateStr) {
   if (!dateStr) return 'Date TBA';
@@ -26,12 +27,19 @@ function formatTime(timeStr) {
 }
 
 export default function EventCard({ event, index = 0 }) {
+  const { isAuthenticated } = useAuth();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
+  const targetPath = `/events/${event.id}`;
+  const linkTo = isAuthenticated
+    ? targetPath
+    : `/login?redirect=${encodeURIComponent(targetPath)}`;
+
   return (
     <Link
-      to={`/events/${event.id}`}
+      to={linkTo}
+      state={!isAuthenticated ? { from: { pathname: targetPath } } : undefined}
       className="card card-hover group flex flex-col h-full animate-fade-in"
       style={{ animationDelay: `${index * 100}ms` }}
     >

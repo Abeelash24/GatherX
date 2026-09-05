@@ -7,6 +7,8 @@ import adminRoutes from './routes/admin.js';
 import registrationRoutes from './routes/register.js';
 import announcementsRoutes from './routes/announcements.js';
 import eventsDashboardRoutes from './routes/events-dashboard.js';
+import analyticsRoutes from './routes/analytics.js';
+import authRoutes from './routes/auth.js';
 
 dotenv.config();
 
@@ -25,11 +27,13 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/api/auth', authRoutes);
 app.use('/api/events', eventsRoutes);
 app.use('/api/events', eventsDashboardRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/register', registrationRoutes);
 app.use('/api/announcements', announcementsRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 app.get('/api/categories', (req, res) => {
   db.all('SELECT DISTINCT category FROM events', (err, rows) => {
